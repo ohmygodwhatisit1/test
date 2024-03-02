@@ -6,8 +6,6 @@
   <title>Голосование</title>
   <!-- Вставляем библиотеку Vue.js -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-  <!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
   <!-- Вставляем библиотеку Axios для отправки HTTP-запросов -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
@@ -26,28 +24,28 @@
         };
       },
       methods: {
-        vote() {
-          // Отправляем заголовок страницы на сервер
-          axios.post('https://vote23-24.i-design.pro/vote', {
+        async vote() {
+          try {
+            // Отправляем заголовок страницы на сервер PHP
+            const response = await axios.post('https://vote23-24.i-design.pro/vote', {
               pageHeader: document.title
-            })
-            .then(response => {
+            });
+
+            // Если голос учтен успешно, блокируем кнопку
+            if (response.status === 200) {
               alert('Голос учтен! Спасибо за ваш выбор.');
               this.voted = true;
-            })
-            .catch(error => {
-              console.error('Ошибка при отправке данных:', error);
-              alert('Произошла ошибка. Пожалуйста, попробуйте еще раз позже.');
-            });
+            }
+          } catch (error) {
+            console.error('Ошибка при отправке голоса:', error);
+            alert('Произошла ошибка. Пожалуйста, попробуйте еще раз позже.');
+          }
         }
       },
       template: `
         <div>
           <h2>Голосование</h2>
-          <form>
           <button @click="vote" :disabled="voted">Проголосовать</button>
-       <!--   <div class="cf-turnstile" data-sitekey="0x4AAAAAAATCDYE6PBhSSftJ"></div> -->
-          </form>
           <p v-if="voted">Ваш голос учтен. Спасибо!</p>
         </div>
       `
