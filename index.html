@@ -6,6 +6,8 @@
   <title>Голосование</title>
   <!-- Вставляем библиотеку Vue.js -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <!-- Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
   <!-- Вставляем библиотеку Axios для отправки HTTP-запросов -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
@@ -42,7 +44,9 @@
       template: `
         <div>
           <h2>Голосование</h2>
+          <form>
           <button @click="vote" :disabled="voted">Проголосовать</button>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAATCDYE6PBhSSftJ"></div>
           <p v-if="voted">Ваш голос учтен. Спасибо!</p>
         </div>
       `
