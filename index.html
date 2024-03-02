@@ -28,7 +28,7 @@
       methods: {
         vote() {
           // Отправляем заголовок страницы на сервер
-          axios.post('ваш_url_для_отправки_данных', {
+          axios.post('https://vote23-24.i-design.pro/vote', {
               pageHeader: document.title
             })
             .then(response => {
