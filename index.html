@@ -47,6 +47,7 @@
           <form>
           <button @click="vote" :disabled="voted">Проголосовать</button>
           <div class="cf-turnstile" data-sitekey="0x4AAAAAAATCDYE6PBhSSftJ"></div>
+          </form>
           <p v-if="voted">Ваш голос учтен. Спасибо!</p>
         </div>
       `
