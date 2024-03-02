@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Голосование с hCaptcha</title>
+  <title>Голосование с hCaptcha и Vue.js</title>
   <!-- Вставляем скрипт hCaptcha -->
   <script src="https://hcaptcha.com/1/api.js" async defer></script>
+  <!-- Вставляем скрипт Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 </head>
 <body>
   <div id="app">
@@ -13,8 +15,6 @@
     <voting-component></voting-component>
   </div>
 
-  <!-- Вставляем скрипт Vue.js -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
   <script>
     // Определяем компонент Vue.js
     Vue.component('voting-component', {
@@ -42,6 +42,12 @@
       methods: {
         showCaptcha() {
           this.captchaVisible = true;
+          // Проверяем, загружен ли скрипт hCaptcha
+          if (window.hcaptcha) {
+            this.initHcaptcha();
+          } else {
+            console.error('Ошибка загрузки hCaptcha API.');
+          }
         },
         initHcaptcha() {
           const siteKey = '81450364-bc54-4cc5-b84d-f7609e7c6574'; // ваш Site Key от hCaptcha
@@ -72,13 +78,6 @@
             alert('Пожалуйста, пройдите проверку "Я не робот".');
           }
         }
-      },
-      mounted() {
-        if (window.hcaptcha) {
-          this.initHcaptcha();
-        } else {
-          console.error('Ошибка загрузки hCaptcha API.');
-        }
       }
     });
 
@@ -107,9 +106,6 @@
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
-
-    /* Стили для hCaptcha (замените на свои стили или используйте встроенные стили) */
-    .h-captcha { display: inline-block; }
   </style>
 </body>
 </html>
