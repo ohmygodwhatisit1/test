@@ -6,6 +6,8 @@
   <title>Голосование</title>
   <!-- Вставляем библиотеку Vue.js -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <!-- Вставляем библиотеку Axios для отправки HTTP-запросов -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
   <div id="app">
@@ -18,22 +20,28 @@
     Vue.component('voting-component', {
       data() {
         return {
-          voteCount: 0,
           voted: false
         };
       },
       methods: {
         vote() {
-          // Здесь можно выполнить запрос на сервер для учета голоса
-          // В этом примере просто увеличим счетчик голосов
-          this.voteCount++;
-          this.voted = true;
+          // Отправляем заголовок страницы на сервер
+          axios.post('ваш_url_для_отправки_данных', {
+              pageHeader: document.title
+            })
+            .then(response => {
+              alert('Голос учтен! Спасибо за ваш выбор.');
+              this.voted = true;
+            })
+            .catch(error => {
+              console.error('Ошибка при отправке данных:', error);
+              alert('Произошла ошибка. Пожалуйста, попробуйте еще раз позже.');
+            });
         }
       },
       template: `
         <div>
           <h2>Голосование</h2>
-          <p>Количество голосов: {{ voteCount }}</p>
           <button @click="vote" :disabled="voted">Проголосовать</button>
           <p v-if="voted">Ваш голос учтен. Спасибо!</p>
         </div>
